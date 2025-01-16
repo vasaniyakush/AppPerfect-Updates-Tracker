@@ -19,44 +19,15 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import AlertDialog from "./dialog";
 import AddUpdatesDialog from "./addUpdatesDialog";
-
-interface Update {
-  id: number;
-  category: string;
-  tasks: Task[];
-}
-
-interface Task {
-  id: number;
-  title: string;
-  jiraLink: string;
-  statuses: Status[];
-  mergeRequests: link[];
-  appLinks: link[];
-}
-
-interface link {
-  id: number;
-  url: string;
-}
-
-interface Status {
-  id: number;
-  status: "In Progress" | "Completed"; // e.g., "Completed", "In Progress"
-  details: Detail[];
-}
-
-interface Detail {
-  id: number;
-  description: string;
-  subPoints?: SubDetail[]; // Optional subpoints
-}
-
-interface SubDetail {
-  id: number;
-  description: string;
-}
-type formatForTypes = "email" | "skype" | "slack";
+import {
+  Detail,
+  Status,
+  SubDetail,
+  Task,
+  Update,
+  formatForTypes,
+  link,
+} from "@/interfaces/all";
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";

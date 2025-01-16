@@ -6,7 +6,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-export default function AlertDialog({ open, setOpen }) {
+interface AlertDialogProps {
+  open: boolean; // State indicating whether the dialog is open
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>; // State updater function for `open`
+}
+
+const AlertDialog: React.FC<AlertDialogProps> = ({ open, setOpen }) => {
   //   const handleClickOpen = () => {
   //     setOpen(true);
   //   };
@@ -23,7 +28,7 @@ export default function AlertDialog({ open, setOpen }) {
     return () => {
       clearTimeout(id);
     };
-  }, []);
+  }, [setOpen]);
 
   return (
     <React.Fragment>
@@ -51,4 +56,6 @@ export default function AlertDialog({ open, setOpen }) {
       </Dialog>
     </React.Fragment>
   );
-}
+};
+
+export default AlertDialog;

@@ -3,21 +3,29 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { TextField } from "@mui/material";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-text";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
+import { Update, formatForTypes } from "@/interfaces/all";
 
-export default function AddUpdatesDialog({
+interface AddUpdatesDialogProps {
+  open: boolean; // State to determine if the dialog is open
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>; // Function to update `open` state
+  updates: Update[]; // Array of updates (assumed based on the name and usage)
+  setUpdates: React.Dispatch<React.SetStateAction<Update[]>>; // Function to update `updates` state
+  formatUpdates: (updates: Update[], formatFor: formatForTypes) => string; // Function to format updates
+}
+
+const AddUpdatesDialog: React.FC<AddUpdatesDialogProps> = ({
   open,
   setOpen,
   updates,
   setUpdates,
   formatUpdates,
-}) {
+}) => {
   //   const handleClickOpen = () => {
   //     setOpen(true);
   //   };
@@ -35,8 +43,8 @@ export default function AddUpdatesDialog({
     console.log("use effect triggered");
 
     try {
-      let newUpdatesString = atob(encodedString);
-      let newUpdates = JSON.parse(newUpdatesString);
+      const newUpdatesString: string = atob(encodedString);
+      const newUpdates = JSON.parse(newUpdatesString);
       console.log("updates=> ", updates);
       console.log("Newencoded udpates=>", newUpdates);
       let combined = [...updates, ...newUpdates];
@@ -44,7 +52,7 @@ export default function AddUpdatesDialog({
       combined = combined.map((upd) => {
         upd.id = index++;
       });
-      setcombinedUpdates([...updates, ...newUpdates]);
+      setcombinedUpdates(combined);
     } catch {}
   }, [encodedString, updates]);
   return (
@@ -100,4 +108,5 @@ export default function AddUpdatesDialog({
       </Dialog>
     </React.Fragment>
   );
-}
+};
+export default AddUpdatesDialog;
