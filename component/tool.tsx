@@ -130,7 +130,7 @@ export default function Tool() {
     let finalStr = "";
 
     if (formatFor == "skype") {
-      finalStr += `${name}\n==============================\n`;
+      finalStr += `Updates: ${name}\n==============================\n`;
     } else if (formatFor == "email") {
       finalStr += "Hi Nautilus Team,\n\n";
     } else if (formatFor == "slack") {
@@ -244,6 +244,16 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
+  function handleCategoryChange(e:React.ChangeEvent<HTMLInputElement>, updateId:number){
+    console.log("Category Change called with UpdateId: ", updateId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    updatedUpdates[updateIndex].category = e.target.value;
+    setUpdates(updatedUpdates);
+  }
 
   function handleAddTicket(e: React.MouseEvent, updateId: number) {
     console.log("Add Ticket called with UpdateId: ", updateId);
@@ -319,6 +329,35 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
+  function handleTicketTitleChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number){ 
+    console.log("Ticket Change called with UpdateId: ", updateId, " TaskId: ", taskId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
+    if(taskIndex === -1){
+      return;
+    }
+    updatedUpdates[updateIndex].tasks[taskIndex].title = e.target.value;
+    setUpdates(updatedUpdates);
+  }
+  function handleJiraLinkChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number){
+    console.log("Jira Link Change called with UpdateId: ", updateId, " TaskId: ", taskId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
+    if(taskIndex === -1){
+      return;
+    }
+    updatedUpdates[updateIndex].tasks[taskIndex].jiraLink = e.target.value;
+    setUpdates(updatedUpdates);
+  }
+
 
   function handleAddStatus(
     e: React.MouseEvent,
@@ -416,6 +455,27 @@ export default function Tool() {
 
     // Set the updated state
     setUpdates(updatedUpdates);
+  }
+  function handleStatusChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number){
+    console.log("Status Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
+    if(taskIndex === -1){
+      return;
+    }
+    const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
+    if(statusIndex === -1){
+      return;
+    }
+    
+    const newStatusValue = e.target.value as "In Progress" | "Completed";
+    updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].status = newStatusValue;
+    setUpdates(updatedUpdates);
+
   }
 
   function handleAddPoint(
@@ -552,6 +612,29 @@ export default function Tool() {
 
     // Set the updated state
     setUpdates(updatedUpdates);
+  }
+  function handlePointChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number, pointId:number){
+    console.log("Point Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId, " PointId: ", pointId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
+    if(taskIndex === -1){
+      return;
+    }
+    const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
+    if(statusIndex === -1){
+      return;
+    }
+    const pointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details.findIndex((point: Detail) => point.id === pointId);
+    if(pointIndex === -1){
+      return;
+    }
+    updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].description = e.target.value;
+    setUpdates(updatedUpdates);
+
   }
 
   function handleAddSubPoint(
@@ -718,6 +801,33 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
+  function handleSubPointChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number, pointId:number, subPointId:number){
+    console.log("SubPoint Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId, " PointId: ", pointId, " SubPointId: ", subPointId);
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
+    if(updateIndex === -1){
+      return;
+    }
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
+    if(taskIndex === -1){
+      return;
+    }
+    const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
+    if(statusIndex === -1){
+      return;
+    }
+    const pointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details.findIndex((point: Detail) => point.id === pointId);
+    if(pointIndex === -1){
+      return;
+    }
+    const subPointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints?.findIndex((subPoint: SubDetail) => subPoint.id === subPointId);
+    if(subPointIndex === -1){
+      return;
+    }
+    updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints[subPointIndex].description = e.target.value;
+    setUpdates(updatedUpdates );
+
+  }
 
   function handleAddMRLink(
     e: React.MouseEvent,
@@ -798,6 +908,43 @@ export default function Tool() {
 
     setUpdates(updatedUpdates);
   }
+  function handleMRLinkChange(
+    e: React.ChangeEvent<HTMLInputElement>,
+    updateId: number,
+    taskId: number,
+    mrLinkId: number
+  ) {
+    console.log(
+      "MR Link Change called with UpdateId:",
+      updateId,
+      "TaskId:",
+      taskId,
+      "MR LinkId:",
+      mrLinkId
+    );
+
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex(
+      (update: Update) => update.id === updateId
+    );
+    if (updateIndex === -1) return;
+
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex(
+      (task: Task) => task.id === taskId
+    );
+    if (taskIndex === -1) return;
+
+    const mrIndex = updatedUpdates[updateIndex].tasks[taskIndex].mergeRequests.findIndex(
+      (mr: link) => mr.id === mrLinkId
+    );
+    if (mrIndex === -1) return;
+
+    updatedUpdates[updateIndex].tasks[taskIndex].mergeRequests[mrIndex].url =
+      e.target.value;
+
+    setUpdates(updatedUpdates);
+  }
+
 
   function handleAddAppLink(
     e: React.MouseEvent,
@@ -874,6 +1021,30 @@ export default function Tool() {
 
     setUpdates(updatedUpdates);
   }
+  function handleAppLinkChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, appLinkId:number){
+    console.log("App Link Change called with UpdateId:", updateId, "TaskId:", taskId, "App LinkId:", appLinkId);
+
+    const updatedUpdates = [...updates];
+    const updateIndex = updatedUpdates.findIndex(
+      (update: Update) => update.id === updateId
+    );
+    if (updateIndex === -1) return;
+
+    const taskIndex = updatedUpdates[updateIndex].tasks.findIndex(
+      (task: Task) => task.id === taskId
+    );
+    if (taskIndex === -1) return;
+
+    const appLinkIndex = updatedUpdates[updateIndex].tasks[taskIndex].appLinks.findIndex(
+      (appLink: link) => appLink.id === appLinkId
+    );
+    if (appLinkIndex === -1) return;
+
+    updatedUpdates[updateIndex].tasks[taskIndex].appLinks[appLinkIndex].url =
+      e.target.value;
+
+    setUpdates(updatedUpdates);
+  }
 
   useEffect(() => {
     console.log("Updates=> ", updates);
@@ -922,7 +1093,7 @@ export default function Tool() {
                 setName(e.target.value)
               }
               label="Name"
-              variant="outlined"
+              variant="filled"
               // sx={{
               //   flex: 1, // Ensures the TextField grows if space is available
               // }}
@@ -965,7 +1136,8 @@ export default function Tool() {
                     id={"category-name-" + update.id.toString()}
                     label={indexToAlphabet(index)}
                     value={update.category}
-                    variant="outlined"
+                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleCategoryChange(e, update.id)}
+                    variant="filled"
                   ></TextField>
 
                   <Box>
@@ -996,8 +1168,9 @@ export default function Tool() {
                           value={task.title}
                           label={index + 1}
                           margin="dense"
-                          variant="outlined"
+                          variant="filled"
                           fullWidth
+                          onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleTicketTitleChange(e, update.id, task.id)}
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
                         ></TextField>
                         <Box
@@ -1026,7 +1199,8 @@ export default function Tool() {
                           value={task.jiraLink}
                           margin="dense"
                           fullWidth
-                          variant="outlined"
+                          onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleJiraLinkChange(e, update.id, task.id)}
+                          variant="filled"
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
                         ></TextField>
                       </Box>
@@ -1045,7 +1219,8 @@ export default function Tool() {
                                 value={status.status}
                                 margin="dense"
                                 fullWidth
-                                variant="outlined"
+                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleStatusChange(e, update.id, task.id, status.id)}
+                                variant="filled"
                               ></TextField>
                               <Box
                                 sx={{ flex: "0 0 25%" }} // Fixed width proportion
@@ -1084,7 +1259,8 @@ export default function Tool() {
                                         value={detail.description}
                                         margin="dense"
                                         fullWidth
-                                        variant="outlined"
+                                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => handlePointChange(e, update.id, task.id, status.id, detail.id)}
+                                        variant="filled"
                                         // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                       />
                                       <Box
@@ -1127,7 +1303,8 @@ export default function Tool() {
                                                 value={subPoint.description}
                                                 margin="dense"
                                                 fullWidth
-                                                variant="outlined"
+                                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleSubPointChange(e, update.id, task.id, status.id, detail.id, subPoint.id)}
+                                                variant="filled"
                                                 // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
@@ -1263,7 +1440,15 @@ export default function Tool() {
                                 value={mergeRequest.url}
                                 margin="dense"
                                 fullWidth
-                                variant="outlined"
+                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                                  handleMRLinkChange(
+                                    e,
+                                    update.id,
+                                    task.id,
+                                    mergeRequest.id
+                                  );
+                                }}
+                                variant="filled"
                               ></TextField>
                               <Box
                                 sx={{ flex: "0 0 20%" }} // Fixed width proportion
@@ -1333,7 +1518,15 @@ export default function Tool() {
                                 value={appLink.url}
                                 margin="dense"
                                 fullWidth
-                                variant="outlined"
+                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                                  handleAppLinkChange(
+                                    e,
+                                    update.id,
+                                    task.id,
+                                    appLink.id
+                                  );
+                                }}
+                                variant="filled"
                               ></TextField>
                               <Box
                                 sx={{ flex: "0 0 20%" }} // Fixed width proportion
@@ -1472,7 +1665,7 @@ export default function Tool() {
               theme="github"
               name="xyz"
               width="100%"
-              height="400px"
+              height="80vh"
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "8px",
