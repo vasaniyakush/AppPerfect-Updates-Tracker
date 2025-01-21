@@ -32,12 +32,16 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppBar component="nav">
           <Toolbar>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            >
-              MUI
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Mady by{" "}
+              <Link
+                color="textPrimary"
+                href="https://www.vasaniyakush.me"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Kush Vasaniya
+              </Link>
             </Typography>
 
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
