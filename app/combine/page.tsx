@@ -1,9 +1,9 @@
-import Tool from "@/component/tool";
+import Combine from "@/component/combine";
 import { Box } from "@mui/material";
 export default function Home() {
   return (
     <Box mt={"4rem"} sx={{ flexGrow: 1 }}>
-      <Tool />
+      <Combine />
     </Box>
   );
 }

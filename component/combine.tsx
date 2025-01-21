@@ -45,67 +45,12 @@ function getTodayDate(): string {
 
 // }
 
-export default function Tool() {
-  const [name, setName] = useState<string | null>("Kush");
+export default function Combine() {
+  const [newUpdate, setNewUpdate] = useState<string | null>("");
   const [open, setOpen] = useState<boolean>(false);
   const [addUpdatesOpen, setAddUpdatesOpen] = useState<boolean>(false);
 
-  const [updates, setUpdates] = useState<Update[]>([
-    {
-      id: 1,
-      category: "Plotly",
-      tasks: [
-        {
-          id: 1,
-          title: "Ticket Title",
-          jiraLink: "https://jirasw.nvidia.com/browse/RGENG-",
-          statuses: [
-            {
-              id: 1,
-              status: "Completed",
-              details: [
-                {
-                  id: 1,
-                  description: "Deployed and verified changes on dev",
-                },
-                {
-                  id: 2,
-                  description:
-                    "Resolved the issue where latest entries were getting duplicated",
-                },
-              ],
-            },
-            {
-              id: 2,
-              status: "In Progress",
-              details: [
-                {
-                  id: 1,
-                  description: "Some task in progress",
-                  subPoints: [
-                    { id: 1, description: "Sub point 1" },
-                    { id: 2, description: "Sub point 2" },
-                  ],
-                },
-              ],
-            },
-          ],
-          mergeRequests: [
-            {
-              id: 1,
-              url: "https://gitlab-master.nvidia.com/urg/plotly-apps/-/merge_requests/517",
-            },
-          ],
-          appLinks: [
-            {
-              id: 1,
-              url: "https://dev-apps.rg-reporting.nvidia.com/allocations-occupancies-kvasaniya/occupancy-report",
-            },
-          ],
-        },
-      ],
-    },
-  ]);
+  const [updates, setUpdates] = useState<Update[]>([]);
 
   const [formatFor, setFormatFor] = useState<formatForTypes>("skype");
 
@@ -269,8 +214,8 @@ export default function Tool() {
     // Create a new task to add
     const emptyTask: Task = {
       id: (updates[selectUpdateIndex]?.tasks?.length || 0) + 1,
-      title: "Ticket Title",
-      jiraLink: "https://jirasw.nvidia.com/browse/RGENG-",
+      title: "New Title",
+      jiraLink: "somelink",
       statuses: [],
       mergeRequests: [],
       appLinks: [],
@@ -569,7 +514,7 @@ export default function Tool() {
       id:
         (updates[updateIndex].tasks[taskIndex].statuses[statusIndex]?.details
           ?.length || 0) + 1,
-      description: "", // You can make this dynamic
+      description: "New Point", // You can make this dynamic
       subPoints: [], // Optionally, initialize subpoints as an empty array
     };
 
@@ -766,7 +711,7 @@ export default function Tool() {
         (updates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[
           pointIndex
         ]?.subPoints?.length || 0) + 1,
-      description: "", // You can make this dynamic
+      description: "New Subpoint", // You can make this dynamic
     };
 
     // Update the selected point with the new subpoint
@@ -961,7 +906,7 @@ export default function Tool() {
     // Create a new MR link
     const newMRLink: link = {
       id: updates[updateIndex].tasks[taskIndex].mergeRequests.length + 1, // Generate a new ID
-      url: "", // Placeholder URL
+      url: "https://example.com/new-mr-link", // Placeholder URL
     };
 
     // Update the MR links array
@@ -1074,7 +1019,7 @@ export default function Tool() {
 
     const newAppLink: link = {
       id: updates[updateIndex].tasks[taskIndex].appLinks.length + 1, // Generate a new ID
-      url: "", // Placeholder URL
+      url: "https://example.com/new-app-link", // Placeholder URL
     };
 
     const updatedUpdates = [...updates];
@@ -1162,6 +1107,46 @@ export default function Tool() {
     setUpdates(updatedUpdates);
   }
 
+  function handleAddUpdates() {
+    console.log("Add Updates called");
+    try {
+      const newUpdates: Update[] =
+        newUpdate != null ? JSON.parse(atob(newUpdate)) : [];
+      const currUpdates = [...updates];
+      newUpdates.map((update: Update) => {
+        // update.category
+
+        const existingIndex = currUpdates.findIndex(
+          (u: Update) => u.category === update.category
+        );
+        if (existingIndex === -1) {
+          const addUpdate = { ...update, id: currUpdates.length + 1 };
+          currUpdates.push(addUpdate);
+        } else {
+          // currUpdates[existingIndex].tasks = [
+          //   ...currUpdates[existingIndex].tasks,
+          //   ...update.tasks,
+          // ];
+
+          update.tasks.map((task: Task) => {
+            const newTask = {
+              ...task,
+              id: currUpdates[existingIndex].tasks.length + 1,
+            };
+            currUpdates[existingIndex].tasks.push(newTask);
+          });
+        }
+
+        setUpdates(currUpdates);
+        setNewUpdate("");
+      });
+    } catch (e) {
+      console.error("Invalid JSON", e);
+      alert("Invalid JSON");
+    }
+    // setAddUpdatesOpen(true);
+  }
+
   useEffect(() => {
     console.log("Updates=> ", updates);
   }, [updates]);
@@ -1174,11 +1159,7 @@ export default function Tool() {
           justifyContent: "space-between",
         }}
       >
-        <AlertDialog
-          open={open}
-          setOpen={setOpen}
-          updates={updates}
-        ></AlertDialog>
+        {/* <AlertDialog open={open} setOpen={setOpen}></AlertDialog> */}
         {/* <AddUpdatesDialog
           open={addUpdatesOpen}
           setOpen={setAddUpdatesOpen}
@@ -1208,29 +1189,31 @@ export default function Tool() {
           >
             <TextField
               id="name"
-              value={name}
+              value={newUpdate}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setName(e.target.value)
+                setNewUpdate(e.target.value)
               }
-              label="Name"
-              variant="filled"
+              placeholder="Enter base64encoded updates here to merge"
+              // label="Name"
+              variant="standard"
+              fullWidth
+              margin="normal"
               // sx={{
               //   flex: 1, // Ensures the TextField grows if space is available
               // }}
             />
-            {/* <Button
+            <Button
               variant="contained"
               color="primary"
-              onClick={() => {
-                setAddUpdatesOpen(true);
-              }} // Replace with desired functionality
+              onClick={handleAddUpdates} // Replace with desired functionality
               sx={{
                 whiteSpace: "nowrap", // Prevents text overflow
                 padding: "10px 20px",
+                marginLeft: "10px",
               }}
             >
-              Add Other Updates
-            </Button> */}
+              Merge
+            </Button>
           </Box>
 
           <Divider sx={{ marginTop: 1 }} orientation="horizontal"></Divider>
@@ -1256,7 +1239,6 @@ export default function Tool() {
                     id={"category-name-" + update.id.toString()}
                     label={indexToAlphabet(index)}
                     value={update.category}
-                    placeholder="Plotly/Data Pipelines/Reporting Service"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleCategoryChange(e, update.id)
                     }
@@ -1289,7 +1271,6 @@ export default function Tool() {
                         <TextField
                           id={"task-title-" + task.id.toString()}
                           value={task.title}
-                          placeholder="Ticket's Title"
                           label={index + 1}
                           margin="dense"
                           variant="filled"
@@ -1323,7 +1304,6 @@ export default function Tool() {
                         <TextField
                           id={"task-jiralink-" + task.id.toString()}
                           value={task.jiraLink}
-                          placeholder="https://jirasw.nvidia.com/browse/RGENG-"
                           margin="dense"
                           fullWidth
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1346,7 +1326,6 @@ export default function Tool() {
                                 id={"mrlink-" + status.id.toString()}
                                 label={index + 1}
                                 value={status.status}
-                                placeholder="In Progress/Completed"
                                 margin="dense"
                                 fullWidth
                                 onChange={(
@@ -1396,7 +1375,6 @@ export default function Tool() {
                                         id={`taskDetail-${detail.id}-${status.id}`}
                                         label={indexToAlphabet(index)}
                                         value={detail.description}
-                                        placeholder="90% of the job is to do this"
                                         margin="dense"
                                         fullWidth
                                         onChange={(
@@ -1451,7 +1429,6 @@ export default function Tool() {
                                                 id={`taskDetail-${subPoint.id}-${detail.id}-${status.id}`}
                                                 label={"-"}
                                                 value={subPoint.description}
-                                                placeholder={`Lie ${index + 1}`}
                                                 margin="dense"
                                                 fullWidth
                                                 onChange={(
@@ -1600,7 +1577,6 @@ export default function Tool() {
                               <TextField
                                 id={"mrlink-" + mergeRequest.id.toString()}
                                 value={mergeRequest.url}
-                                placeholder="No API KEYS on GIT Please"
                                 margin="dense"
                                 fullWidth
                                 onChange={(
@@ -1681,7 +1657,6 @@ export default function Tool() {
                               <TextField
                                 id={"applink-" + appLink.id.toString()}
                                 value={appLink.url}
-                                placeholder="Don't Deploy on Friday"
                                 margin="dense"
                                 fullWidth
                                 onChange={(
