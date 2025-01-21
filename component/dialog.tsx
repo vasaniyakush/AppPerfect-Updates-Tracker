@@ -26,7 +26,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
   React.useEffect(() => {
     const id = setTimeout(() => {
       setOpen(false);
-    }, 1000);
+    }, 3000); // Extended timeout for better user experience
 
     return () => {
       clearTimeout(id);
@@ -35,47 +35,48 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
 
   const encodedUpdates = btoa(JSON.stringify(updates));
 
-  // const handleCopyToClipboard = () => {
-  //   navigator.clipboard.writeText(encodedUpdates);
-  //   alert("Copied to clipboard!");
-  // };
-
   return (
-    <Dialog
-      fullWidth
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">
-        {"Updates Copied to Clipboard"}
-      </DialogTitle>
-      <DialogContent dividers>
-        <DialogContentText id="alert-dialog-description">
-          The base64-encoded updates have been copied to your clipboard. Please
-          share with the respective developer to combine it with other updates.
-        </DialogContentText>
-        <Box
-          mt={2}
-          p={2}
-          border={1}
-          borderColor="grey.300"
-          borderRadius={1}
-          sx={{
-            maxHeight: 200,
-            overflowY: "auto",
-            backgroundColor: "grey.100",
-            whiteSpace: "pre-wrap",
-          }}
-        >
-          <Typography variant="body2">{encodedUpdates}</Typography>
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>Okay</Button>
-      </DialogActions>
-    </Dialog>
+    <React.Fragment>
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Updates Copied to Clipboard"}
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText id="alert-dialog-description">
+            The base64-encoded updates have been copied to your clipboard.
+            Please share them with the respective developer to combine with
+            other updates.
+          </DialogContentText>
+          <Box
+            sx={{
+              mt: 2,
+              maxHeight: "200px", // Limit height for the text
+              overflowY: "auto", // Enable scrolling for overflow
+              padding: "10px",
+              backgroundColor: "#f5f5f5",
+              borderRadius: "4px",
+              wordWrap: "break-word", // Ensure long text wraps properly
+              border: "1px solid #ddd",
+            }}
+          >
+            <Typography variant="body2" color="textSecondary" component="div">
+              {encodedUpdates}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant="contained">
+            Okay
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 };
 
