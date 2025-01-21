@@ -67,7 +67,7 @@ export default function Combine() {
     let finalStr = "";
 
     if (formatFor == "skype") {
-      finalStr += `Updates: ${name}\n==============================\n`;
+      finalStr += `Updates: \n==============================\n`;
     } else if (formatFor == "email") {
       finalStr += "Hi Nautilus Team,\n\n";
     } else if (formatFor == "slack") {
