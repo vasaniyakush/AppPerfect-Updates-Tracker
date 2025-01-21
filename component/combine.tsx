@@ -29,6 +29,7 @@ import {
   link,
 } from "@/interfaces/all";
 import useLocalStorage from "@/customhook/useLocalStorage";
+import { TextFieldShadcn } from "./TextFieldShadcn";
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -1165,6 +1166,7 @@ export default function Combine() {
           height: "90vh",
           display: "flex",
           justifyContent: "space-between",
+          // backgroundColor: "#",
         }}
       >
         {/* <AlertDialog open={open} setOpen={setOpen}></AlertDialog> */}
@@ -1179,7 +1181,7 @@ export default function Combine() {
           overflow={"scroll"}
           sx={{
             width: "60%",
-            padding: "1rem",
+            // padding: "1rem",
           }}
         >
           <Box
@@ -1195,7 +1197,7 @@ export default function Combine() {
               // mt: 2, // Adds margin-top for spacing from other elements
             }}
           >
-            <TextField
+            <TextFieldShadcn
               id="name"
               value={newUpdate}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1207,7 +1209,7 @@ export default function Combine() {
               fullWidth
               margin="normal"
               // sx={{
-              //   flex: 1, // Ensures the TextField grows if space is available
+              //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
               // }}
             />
             <Button
@@ -1227,10 +1229,10 @@ export default function Combine() {
           <Divider sx={{ marginTop: 1 }} orientation="horizontal"></Divider>
           <Divider orientation="horizontal"></Divider>
 
-          <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
+          <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
             <Box>
               <Button
-                variant="outlined"
+                variant="contained"
                 startIcon={<AddRoundedIcon />}
                 color="success"
                 onClick={handleAddCategory}
@@ -1242,16 +1244,16 @@ export default function Combine() {
           {updates.map((update: Update, index: number) => {
             return (
               <Box key={update.id}>
-                <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
-                  <TextField
+                <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
+                  <TextFieldShadcn
                     id={"category-name-" + update.id.toString()}
-                    label={indexToAlphabet(index)}
+                    label={"Category: " + indexToAlphabet(index)}
                     value={update.category}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleCategoryChange(e, update.id)
                     }
                     variant="filled"
-                  ></TextField>
+                  ></TextFieldShadcn>
 
                   <Box>
                     <Button
@@ -1272,22 +1274,21 @@ export default function Combine() {
                     <Box key={task.id} mt={2} ml={4}>
                       <Box
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         justifyContent={"space-between"}
                         gap={1}
                       >
-                        <TextField
+                        <TextFieldShadcn
                           id={"task-title-" + task.id.toString()}
                           value={task.title}
-                          label={index + 1}
-                          margin="dense"
+                          label={`Ticket: ${index + 1}`}
                           variant="filled"
                           fullWidth
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleTicketTitleChange(e, update.id, task.id)
                           }
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
-                        ></TextField>
+                        ></TextFieldShadcn>
                         <Box
                           sx={{ flex: "0 0 30%" }} // Fixed width proportion
                         >
@@ -1305,36 +1306,36 @@ export default function Combine() {
                       </Box>
                       <Box
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         justifyContent={"space-between"}
+                        mt={2}
                         gap={1}
                       >
-                        <TextField
+                        <TextFieldShadcn
                           id={"task-jiralink-" + task.id.toString()}
                           value={task.jiraLink}
-                          margin="dense"
                           fullWidth
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleJiraLinkChange(e, update.id, task.id)
                           }
                           variant="filled"
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
-                        ></TextField>
+                        ></TextFieldShadcn>
                       </Box>
                       {task.statuses.map((status: Status, index: number) => {
                         return (
                           <Box key={status.id} ml={4}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
                               gap={1}
+                              mt={2}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"mrlink-" + status.id.toString()}
                                 label={index + 1}
                                 value={status.status}
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1347,7 +1348,7 @@ export default function Combine() {
                                   )
                                 }
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
                                 sx={{ flex: "0 0 25%" }} // Fixed width proportion
                               >
@@ -1374,16 +1375,15 @@ export default function Combine() {
                                   <Box key={detail.id} ml={4}>
                                     <Box
                                       display="flex"
-                                      alignItems="center"
+                                      alignItems="flex-end"
                                       justifyContent={"space-between"}
                                       gap={1}
                                     >
-                                      {/* TextField with 60% width */}
-                                      <TextField
+                                      {/* TextFieldShadcn with 60% width */}
+                                      <TextFieldShadcn
                                         id={`taskDetail-${detail.id}-${status.id}`}
                                         label={indexToAlphabet(index)}
                                         value={detail.description}
-                                        margin="dense"
                                         fullWidth
                                         onChange={(
                                           e: React.ChangeEvent<HTMLInputElement>
@@ -1428,16 +1428,15 @@ export default function Combine() {
                                           <Box key={subPoint.id} ml={4}>
                                             <Box
                                               display="flex"
-                                              alignItems="center"
+                                              alignItems="flex-end"
                                               justifyContent={"space-between"}
                                               gap={1}
                                             >
-                                              {/* TextField with 60% width */}
-                                              <TextField
+                                              {/* TextFieldShadcn with 60% width */}
+                                              <TextFieldShadcn
                                                 id={`taskDetail-${subPoint.id}-${detail.id}-${status.id}`}
                                                 label={"-"}
                                                 value={subPoint.description}
-                                                margin="dense"
                                                 fullWidth
                                                 onChange={(
                                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1455,7 +1454,7 @@ export default function Combine() {
                                                 // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
-                                                sx={{ flex: "0 0 10%" }} // Fixed width proportion
+                                                sx={{ flex: "0 0 30%" }} // Fixed width proportion
                                               >
                                                 <Button
                                                   variant="outlined"
@@ -1487,7 +1486,7 @@ export default function Combine() {
                                       ml={4}
                                       mt={1}
                                       display="flex"
-                                      alignItems="center"
+                                      alignItems="flex-end"
                                       gap={1}
                                     >
                                       <Box>
@@ -1518,13 +1517,13 @@ export default function Combine() {
                               ml={4}
                               mt={1}
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               gap={1}
                             >
                               <Box>
                                 {/* <button>Button 1</button> */}
                                 <Button
-                                  variant="outlined"
+                                  variant="contained"
                                   startIcon={<AddRoundedIcon />}
                                   color="success"
                                   onClick={(e) =>
@@ -1547,13 +1546,13 @@ export default function Combine() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
                           {/* <button>Button 1</button> */}
                           <Button
-                            variant="outlined"
+                            variant="contained"
                             startIcon={<AddRoundedIcon />}
                             color="success"
                             onClick={(e) => {
@@ -1568,6 +1567,7 @@ export default function Combine() {
                         <Typography
                           variant="body1"
                           component="div"
+                          mt={1}
                           sx={{ flexGrow: 1 }}
                         >
                           MR:-
@@ -1578,14 +1578,13 @@ export default function Combine() {
                           <Box key={mergeRequest.id} ml={2}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
                               gap={1}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"mrlink-" + mergeRequest.id.toString()}
                                 value={mergeRequest.url}
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1598,7 +1597,7 @@ export default function Combine() {
                                   );
                                 }}
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
                                 sx={{ flex: "0 0 20%" }} // Fixed width proportion
                               >
@@ -1626,7 +1625,7 @@ export default function Combine() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
@@ -1658,14 +1657,13 @@ export default function Combine() {
                           <Box key={appLink.id} ml={2}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
                               gap={1}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"applink-" + appLink.id.toString()}
                                 value={appLink.url}
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1678,9 +1676,9 @@ export default function Combine() {
                                   );
                                 }}
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
-                                sx={{ flex: "0 0 20%" }} // Fixed width proportion
+                                sx={{ flex: "0 0 25%" }} // Fixed width proportion
                               >
                                 <Button
                                   variant="outlined"
@@ -1706,7 +1704,7 @@ export default function Combine() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
@@ -1726,11 +1724,11 @@ export default function Combine() {
                     </Box>
                   );
                 })}
-                <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
+                <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
                   <Box>
                     {/* <button>Button 1</button> */}
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       startIcon={<AddRoundedIcon />}
                       color="success"
                       onClick={(e) => {
@@ -1752,6 +1750,7 @@ export default function Combine() {
         <Box
           sx={{
             width: "40%",
+            height: "100%",
             // backgroundColor: "", // Optional for visualization
           }}
         >
@@ -1761,7 +1760,7 @@ export default function Combine() {
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "space-between",
-
+              height: "100%",
               width: "100%",
             }}
           >
@@ -1774,10 +1773,10 @@ export default function Combine() {
                 justifyContent: "space-between",
                 width: "100%",
                 mb: 2,
-                pl: 5,
-                pr: 5,
-                pb: 2,
-                pt: 2,
+                pl: 2,
+                pr: 2,
+                // pb: 2,
+                // pt: 2,
               }}
             >
               <Typography
@@ -1811,12 +1810,12 @@ export default function Combine() {
             {/* Preview Section */}
             <AceEditor
               value={formatUpdates(updates, formatFor)}
-              fontSize={18}
+              fontSize={14}
               mode="text"
               theme="github"
               name="xyz"
               width="100%"
-              height="80vh"
+              height="100%"
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "8px",

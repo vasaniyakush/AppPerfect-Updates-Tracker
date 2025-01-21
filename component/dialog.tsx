@@ -61,6 +61,7 @@ const AlertDialog: React.FC<AlertDialogProps> = ({
           {/* <DialogContentText mt={2} id="alert-dialog-description2"> */}
           <Typography
             mt={2}
+            flexWrap="wrap"
             // InputProps={{ readOnly: true }}
           >
             {btoa(JSON.stringify(updates))}

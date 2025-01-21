@@ -31,7 +31,7 @@ export default function RootLayout({
 
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <AppBar component="nav">
-          <Toolbar>
+          <Toolbar style={{ minHeight: "50px" }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Mady by{" "}
               <Link
@@ -46,7 +46,7 @@ export default function RootLayout({
 
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <Typography
-                variant="h6"
+                variant="button"
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
@@ -62,7 +62,7 @@ export default function RootLayout({
             </Box>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <Typography
-                variant="h6"
+                variant="button"
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
@@ -78,7 +78,7 @@ export default function RootLayout({
             </Box>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <Typography
-                variant="h6"
+                variant="button"
                 component="div"
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >

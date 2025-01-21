@@ -17,6 +17,7 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import ShareIcon from "@mui/icons-material/Share";
 import AlertDialog from "./dialog";
 import AddUpdatesDialog from "./addUpdatesDialog";
 import {
@@ -29,6 +30,7 @@ import {
   link,
 } from "@/interfaces/all";
 import useLocalStorage from "@/customhook/useLocalStorage";
+import { TextFieldShadcn } from "./TextFieldShadcn";
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -1194,7 +1196,7 @@ export default function Tool() {
           overflow={"scroll"}
           sx={{
             width: "60%",
-            padding: "1rem",
+            // padding: "1rem",
           }}
         >
           <Box
@@ -1205,12 +1207,12 @@ export default function Tool() {
               alignItems: "center",
               justifyContent: "space-between",
               pl: 4,
-              pr: 5,
+              pr: 2,
               // gap: 2, // Adds space between elements
               // mt: 2, // Adds margin-top for spacing from other elements
             }}
           >
-            <TextField
+            <TextFieldShadcn
               id="name"
               value={name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -1219,31 +1221,35 @@ export default function Tool() {
               label="Name"
               variant="filled"
               // sx={{
-              //   flex: 1, // Ensures the TextField grows if space is available
+              //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
               // }}
             />
-            {/* <Button
+            <Button
               variant="contained"
-              color="primary"
-              onClick={() => {
-                setAddUpdatesOpen(true);
-              }} // Replace with desired functionality
+              color="success"
+              onClick={() => handleShareUpdates(updates)}
+              endIcon={<ShareIcon />}
               sx={{
-                whiteSpace: "nowrap", // Prevents text overflow
+                alignSelf: "center",
+                fontSize: "1rem",
                 padding: "10px 20px",
+                borderRadius: "8px",
+                textTransform: "none",
+                boxShadow: 3,
               }}
+              size="medium"
             >
-              Add Other Updates
-            </Button> */}
+              Share Updates
+            </Button>
           </Box>
 
           <Divider sx={{ marginTop: 1 }} orientation="horizontal"></Divider>
           <Divider orientation="horizontal"></Divider>
 
-          <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
+          <Box ml={4} mt={1} display="flex" alignItems="end" gap={1}>
             <Box>
               <Button
-                variant="outlined"
+                variant="contained"
                 startIcon={<AddRoundedIcon />}
                 color="success"
                 onClick={handleAddCategory}
@@ -1255,17 +1261,17 @@ export default function Tool() {
           {updates.map((update: Update, index: number) => {
             return (
               <Box key={update.id}>
-                <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
-                  <TextField
+                <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
+                  <TextFieldShadcn
                     id={"category-name-" + update.id.toString()}
-                    label={indexToAlphabet(index)}
+                    label={"Category: " + indexToAlphabet(index)}
                     value={update.category}
                     placeholder="Plotly/Data Pipelines/Reporting Service"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleCategoryChange(e, update.id)
                     }
                     variant="filled"
-                  ></TextField>
+                  ></TextFieldShadcn>
 
                   <Box>
                     <Button
@@ -1284,25 +1290,19 @@ export default function Tool() {
                 {update.tasks.map((task: Task, index: number) => {
                   return (
                     <Box key={task.id} mt={2} ml={4}>
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent={"space-between"}
-                        gap={1}
-                      >
-                        <TextField
+                      <Box display="flex" alignItems="flex-end" gap={1}>
+                        <TextFieldShadcn
                           id={"task-title-" + task.id.toString()}
                           value={task.title}
                           placeholder="Ticket's Title"
-                          label={index + 1}
-                          margin="dense"
+                          label={`Ticket: ${index + 1}`}
                           variant="filled"
                           fullWidth
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleTicketTitleChange(e, update.id, task.id)
                           }
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
-                        ></TextField>
+                        ></TextFieldShadcn>
                         <Box
                           sx={{ flex: "0 0 30%" }} // Fixed width proportion
                         >
@@ -1320,38 +1320,38 @@ export default function Tool() {
                       </Box>
                       <Box
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         justifyContent={"space-between"}
+                        mt={2}
                         gap={1}
                       >
-                        <TextField
+                        <TextFieldShadcn
                           id={"task-jiralink-" + task.id.toString()}
                           value={task.jiraLink}
                           placeholder="https://jirasw.nvidia.com/browse/RGENG-"
-                          margin="dense"
                           fullWidth
                           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                             handleJiraLinkChange(e, update.id, task.id)
                           }
                           variant="filled"
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
-                        ></TextField>
+                        ></TextFieldShadcn>
                       </Box>
                       {task.statuses.map((status: Status, index: number) => {
                         return (
-                          <Box key={status.id} ml={4}>
+                          <Box key={status.id} mt={1} ml={4}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
+                              mt={2}
                               gap={1}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"mrlink-" + status.id.toString()}
                                 label={index + 1}
                                 value={status.status}
                                 placeholder="In Progress/Completed"
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1364,7 +1364,7 @@ export default function Tool() {
                                   )
                                 }
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
                                 sx={{ flex: "0 0 25%" }} // Fixed width proportion
                               >
@@ -1391,17 +1391,16 @@ export default function Tool() {
                                   <Box key={detail.id} ml={4}>
                                     <Box
                                       display="flex"
-                                      alignItems="center"
+                                      alignItems="flex-end"
                                       justifyContent={"space-between"}
                                       gap={1}
                                     >
-                                      {/* TextField with 60% width */}
-                                      <TextField
+                                      {/* TextFieldShadcn with 60% width */}
+                                      <TextFieldShadcn
                                         id={`taskDetail-${detail.id}-${status.id}`}
                                         label={indexToAlphabet(index)}
                                         value={detail.description}
                                         placeholder="90% of the job is to do this"
-                                        margin="dense"
                                         fullWidth
                                         onChange={(
                                           e: React.ChangeEvent<HTMLInputElement>
@@ -1446,17 +1445,16 @@ export default function Tool() {
                                           <Box key={subPoint.id} ml={4}>
                                             <Box
                                               display="flex"
-                                              alignItems="center"
+                                              alignItems="flex-end"
                                               justifyContent={"space-between"}
                                               gap={1}
                                             >
-                                              {/* TextField with 60% width */}
-                                              <TextField
+                                              {/* TextFieldShadcn with 60% width */}
+                                              <TextFieldShadcn
                                                 id={`taskDetail-${subPoint.id}-${detail.id}-${status.id}`}
                                                 label={"-"}
                                                 value={subPoint.description}
                                                 placeholder={`Lie ${index + 1}`}
-                                                margin="dense"
                                                 fullWidth
                                                 onChange={(
                                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1474,7 +1472,7 @@ export default function Tool() {
                                                 // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
-                                                sx={{ flex: "0 0 10%" }} // Fixed width proportion
+                                                sx={{ flex: "0 0 30%" }} // Fixed width proportion
                                               >
                                                 <Button
                                                   variant="outlined"
@@ -1506,7 +1504,7 @@ export default function Tool() {
                                       ml={4}
                                       mt={1}
                                       display="flex"
-                                      alignItems="center"
+                                      alignItems="flex-end"
                                       gap={1}
                                     >
                                       <Box>
@@ -1537,13 +1535,13 @@ export default function Tool() {
                               ml={4}
                               mt={1}
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               gap={1}
                             >
                               <Box>
                                 {/* <button>Button 1</button> */}
                                 <Button
-                                  variant="outlined"
+                                  variant="contained"
                                   startIcon={<AddRoundedIcon />}
                                   color="success"
                                   onClick={(e) =>
@@ -1566,13 +1564,13 @@ export default function Tool() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
                           {/* <button>Button 1</button> */}
                           <Button
-                            variant="outlined"
+                            variant="contained"
                             startIcon={<AddRoundedIcon />}
                             color="success"
                             onClick={(e) => {
@@ -1587,6 +1585,7 @@ export default function Tool() {
                         <Typography
                           variant="body1"
                           component="div"
+                          mt={1}
                           sx={{ flexGrow: 1 }}
                         >
                           MR:-
@@ -1597,15 +1596,14 @@ export default function Tool() {
                           <Box key={mergeRequest.id} ml={2}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
                               gap={1}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"mrlink-" + mergeRequest.id.toString()}
                                 value={mergeRequest.url}
                                 placeholder="No API KEYS on GIT Please"
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1618,7 +1616,7 @@ export default function Tool() {
                                   );
                                 }}
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
                                 sx={{ flex: "0 0 20%" }} // Fixed width proportion
                               >
@@ -1646,7 +1644,7 @@ export default function Tool() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
@@ -1678,15 +1676,14 @@ export default function Tool() {
                           <Box key={appLink.id} ml={2}>
                             <Box
                               display="flex"
-                              alignItems="center"
+                              alignItems="flex-end"
                               justifyContent={"space-between"}
                               gap={1}
                             >
-                              <TextField
+                              <TextFieldShadcn
                                 id={"applink-" + appLink.id.toString()}
                                 value={appLink.url}
                                 placeholder="Don't Deploy on Friday"
-                                margin="dense"
                                 fullWidth
                                 onChange={(
                                   e: React.ChangeEvent<HTMLInputElement>
@@ -1699,9 +1696,9 @@ export default function Tool() {
                                   );
                                 }}
                                 variant="filled"
-                              ></TextField>
+                              ></TextFieldShadcn>
                               <Box
-                                sx={{ flex: "0 0 20%" }} // Fixed width proportion
+                                sx={{ flex: "0 0 25%" }} // Fixed width proportion
                               >
                                 <Button
                                   variant="outlined"
@@ -1727,7 +1724,7 @@ export default function Tool() {
                         ml={4}
                         mt={1}
                         display="flex"
-                        alignItems="center"
+                        alignItems="flex-end"
                         gap={1}
                       >
                         <Box>
@@ -1747,11 +1744,11 @@ export default function Tool() {
                     </Box>
                   );
                 })}
-                <Box ml={4} mt={1} display="flex" alignItems="center" gap={1}>
+                <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
                   <Box>
                     {/* <button>Button 1</button> */}
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       startIcon={<AddRoundedIcon />}
                       color="success"
                       onClick={(e) => {
@@ -1773,6 +1770,7 @@ export default function Tool() {
         <Box
           sx={{
             width: "40%",
+            height: "100%",
             // backgroundColor: "", // Optional for visualization
           }}
         >
@@ -1782,6 +1780,7 @@ export default function Tool() {
               flexDirection: "column",
               alignItems: "flex-start",
               justifyContent: "space-between",
+              height: "100%",
 
               width: "100%",
             }}
@@ -1795,10 +1794,10 @@ export default function Tool() {
                 justifyContent: "space-between",
                 width: "100%",
                 mb: 2,
-                pl: 5,
-                pr: 5,
-                pb: 2,
-                pt: 2,
+                pl: 2,
+                pr: 2,
+                // pb: 2,
+                // pt: 2,
               }}
             >
               <Typography
@@ -1832,12 +1831,12 @@ export default function Tool() {
             {/* Preview Section */}
             <AceEditor
               value={formatUpdates(updates, formatFor)}
-              fontSize={18}
+              fontSize={14}
               mode="text"
               theme="github"
               name="xyz"
               width="100%"
-              height="75vh"
+              height="100%"
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "8px",
@@ -1846,21 +1845,6 @@ export default function Tool() {
             />
 
             {/* Share Button Section */}
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handleShareUpdates(updates)}
-              sx={{
-                alignSelf: "center",
-                fontSize: "1rem",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                textTransform: "none",
-                boxShadow: 3,
-              }}
-            >
-              Share Updates
-            </Button>
           </Box>
         </Box>
       </Box>
