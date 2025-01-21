@@ -150,9 +150,8 @@ export default function Tool() {
 
               {
                 status.details.map((detail: Detail, index: number) => {
-                  finalStr += `            ${indexToAlphabet(index)}. ${
-                    detail.description
-                  }\n`;
+                  finalStr += `            ${indexToAlphabet(index)}. ${detail.description
+                    }\n`;
 
                   {
                     detail.subPoints?.map(
@@ -244,11 +243,11 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
-  function handleCategoryChange(e:React.ChangeEvent<HTMLInputElement>, updateId:number){
+  function handleCategoryChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number) {
     console.log("Category Change called with UpdateId: ", updateId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     updatedUpdates[updateIndex].category = e.target.value;
@@ -329,29 +328,29 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
-  function handleTicketTitleChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number){ 
+  function handleTicketTitleChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number) {
     console.log("Ticket Change called with UpdateId: ", updateId, " TaskId: ", taskId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
-    if(taskIndex === -1){
+    if (taskIndex === -1) {
       return;
     }
     updatedUpdates[updateIndex].tasks[taskIndex].title = e.target.value;
     setUpdates(updatedUpdates);
   }
-  function handleJiraLinkChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number){
+  function handleJiraLinkChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number) {
     console.log("Jira Link Change called with UpdateId: ", updateId, " TaskId: ", taskId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
-    if(taskIndex === -1){
+    if (taskIndex === -1) {
       return;
     }
     updatedUpdates[updateIndex].tasks[taskIndex].jiraLink = e.target.value;
@@ -456,22 +455,22 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
-  function handleStatusChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number){
+  function handleStatusChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number, statusId: number) {
     console.log("Status Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
-    if(taskIndex === -1){
+    if (taskIndex === -1) {
       return;
     }
     const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
-    if(statusIndex === -1){
+    if (statusIndex === -1) {
       return;
     }
-    
+
     const newStatusValue = e.target.value as "In Progress" | "Completed";
     updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].status = newStatusValue;
     setUpdates(updatedUpdates);
@@ -613,23 +612,23 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
-  function handlePointChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number, pointId:number){
+  function handlePointChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number, statusId: number, pointId: number) {
     console.log("Point Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId, " PointId: ", pointId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
-    if(taskIndex === -1){
+    if (taskIndex === -1) {
       return;
     }
     const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
-    if(statusIndex === -1){
+    if (statusIndex === -1) {
       return;
     }
     const pointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details.findIndex((point: Detail) => point.id === pointId);
-    if(pointIndex === -1){
+    if (pointIndex === -1) {
       return;
     }
     updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].description = e.target.value;
@@ -709,10 +708,10 @@ export default function Tool() {
     updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[
       pointIndex
     ].subPoints = [
-      ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
-        .details[pointIndex]?.subPoints || []),
-      newSubPoint,
-    ];
+        ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
+          .details[pointIndex]?.subPoints || []),
+        newSubPoint,
+      ];
 
     // Set the updated state
     setUpdates(updatedUpdates);
@@ -801,31 +800,36 @@ export default function Tool() {
     // Set the updated state
     setUpdates(updatedUpdates);
   }
-  function handleSubPointChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, statusId:number, pointId:number, subPointId:number){
+  function handleSubPointChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number, statusId: number, pointId: number, subPointId: number) {
     console.log("SubPoint Change called with UpdateId: ", updateId, " TaskId: ", taskId, " StatusId: ", statusId, " PointId: ", pointId, " SubPointId: ", subPointId);
     const updatedUpdates = [...updates];
     const updateIndex = updatedUpdates.findIndex((update: Update) => update.id === updateId);
-    if(updateIndex === -1){
+    if (updateIndex === -1) {
       return;
     }
     const taskIndex = updatedUpdates[updateIndex].tasks.findIndex((task: Task) => task.id === taskId);
-    if(taskIndex === -1){
+    if (taskIndex === -1) {
       return;
     }
     const statusIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses.findIndex((status: Status) => status.id === statusId);
-    if(statusIndex === -1){
+    if (statusIndex === -1) {
       return;
     }
     const pointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details.findIndex((point: Detail) => point.id === pointId);
-    if(pointIndex === -1){
+    if (pointIndex === -1) {
       return;
     }
     const subPointIndex = updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints?.findIndex((subPoint: SubDetail) => subPoint.id === subPointId);
-    if(subPointIndex === -1){
+    if (subPointIndex === -1) {
       return;
     }
-    updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints[subPointIndex].description = e.target.value;
-    setUpdates(updatedUpdates );
+    if (updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints) {
+      if (subPointIndex !== undefined) {
+        updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[pointIndex].subPoints[subPointIndex].description = e.target.value;
+      }
+    }
+
+    setUpdates(updatedUpdates);
 
   }
 
@@ -1021,7 +1025,7 @@ export default function Tool() {
 
     setUpdates(updatedUpdates);
   }
-  function handleAppLinkChange( e:React.ChangeEvent<HTMLInputElement>, updateId:number, taskId:number, appLinkId:number){
+  function handleAppLinkChange(e: React.ChangeEvent<HTMLInputElement>, updateId: number, taskId: number, appLinkId: number) {
     console.log("App Link Change called with UpdateId:", updateId, "TaskId:", taskId, "App LinkId:", appLinkId);
 
     const updatedUpdates = [...updates];
@@ -1094,9 +1098,9 @@ export default function Tool() {
               }
               label="Name"
               variant="filled"
-              // sx={{
-              //   flex: 1, // Ensures the TextField grows if space is available
-              // }}
+            // sx={{
+            //   flex: 1, // Ensures the TextField grows if space is available
+            // }}
             />
             <Button
               variant="contained"
@@ -1136,7 +1140,7 @@ export default function Tool() {
                     id={"category-name-" + update.id.toString()}
                     label={indexToAlphabet(index)}
                     value={update.category}
-                    onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleCategoryChange(e, update.id)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCategoryChange(e, update.id)}
                     variant="filled"
                   ></TextField>
 
@@ -1170,7 +1174,7 @@ export default function Tool() {
                           margin="dense"
                           variant="filled"
                           fullWidth
-                          onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleTicketTitleChange(e, update.id, task.id)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleTicketTitleChange(e, update.id, task.id)}
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
                         ></TextField>
                         <Box
@@ -1199,7 +1203,7 @@ export default function Tool() {
                           value={task.jiraLink}
                           margin="dense"
                           fullWidth
-                          onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleJiraLinkChange(e, update.id, task.id)}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleJiraLinkChange(e, update.id, task.id)}
                           variant="filled"
                           sx={{ flex: "0 0 70%", alignSelf: "flex-start" }} // Fixed width proportion
                         ></TextField>
@@ -1219,7 +1223,7 @@ export default function Tool() {
                                 value={status.status}
                                 margin="dense"
                                 fullWidth
-                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleStatusChange(e, update.id, task.id, status.id)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleStatusChange(e, update.id, task.id, status.id)}
                                 variant="filled"
                               ></TextField>
                               <Box
@@ -1259,9 +1263,9 @@ export default function Tool() {
                                         value={detail.description}
                                         margin="dense"
                                         fullWidth
-                                        onChange={(e:React.ChangeEvent<HTMLInputElement>) => handlePointChange(e, update.id, task.id, status.id, detail.id)}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handlePointChange(e, update.id, task.id, status.id, detail.id)}
                                         variant="filled"
-                                        // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                      // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                       />
                                       <Box
                                         sx={{ flex: "0 0 20%" }} // Fixed width proportion
@@ -1303,9 +1307,9 @@ export default function Tool() {
                                                 value={subPoint.description}
                                                 margin="dense"
                                                 fullWidth
-                                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => handleSubPointChange(e, update.id, task.id, status.id, detail.id, subPoint.id)}
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleSubPointChange(e, update.id, task.id, status.id, detail.id, subPoint.id)}
                                                 variant="filled"
-                                                // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                              // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
                                                 sx={{ flex: "0 0 10%" }} // Fixed width proportion
@@ -1440,7 +1444,7 @@ export default function Tool() {
                                 value={mergeRequest.url}
                                 margin="dense"
                                 fullWidth
-                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                   handleMRLinkChange(
                                     e,
                                     update.id,
@@ -1518,7 +1522,7 @@ export default function Tool() {
                                 value={appLink.url}
                                 margin="dense"
                                 fullWidth
-                                onChange={(e:React.ChangeEvent<HTMLInputElement>) => {
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                   handleAppLinkChange(
                                     e,
                                     update.id,
