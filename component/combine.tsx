@@ -59,7 +59,7 @@ export default function Combine() {
 
   const [formatFor, setFormatFor] = useLocalStorage<formatForTypes>(
     "combine-formatFor",
-    "skype"
+    "email"
   );
 
   const handleFormatFor = (
@@ -1802,7 +1802,7 @@ export default function Combine() {
                 aria-label="text alignment"
                 size="medium"
               >
-                <ToggleButton value="skype">Skype</ToggleButton>
+                {/* <ToggleButton value="skype">Skype</ToggleButton> */}
                 <ToggleButton value="email">Email</ToggleButton>
                 <ToggleButton value="slack">Slack</ToggleButton>
               </ToggleButtonGroup>

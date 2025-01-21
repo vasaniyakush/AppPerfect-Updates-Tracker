@@ -70,9 +70,25 @@ export default function RootLayout({
                   target="_blank"
                   rel="noopener noreferrer"
                   href="/combine"
-                  sx={{ color: "#fff" }}
+                  sx={{ color: "#fff", mr: 2 }}
                 >
                   Combine
+                </Link>{" "}
+              </Typography>
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+              >
+                <Link
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href="/instructions"
+                  sx={{ color: "#fff" }}
+                >
+                  Instructions
                 </Link>{" "}
               </Typography>
             </Box>
