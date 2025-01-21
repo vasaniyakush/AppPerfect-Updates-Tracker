@@ -28,6 +28,7 @@ import {
   formatForTypes,
   link,
 } from "@/interfaces/all";
+import useLocalStorage from "@/customhook/useLocalStorage";
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -50,7 +51,7 @@ export default function Tool() {
   const [open, setOpen] = useState<boolean>(false);
   const [addUpdatesOpen, setAddUpdatesOpen] = useState<boolean>(false);
 
-  const [updates, setUpdates] = useState<Update[]>([
+  const [updates, setUpdates] = useLocalStorage<Update[]>("create-updates", [
     {
       id: 1,
       category: "Plotly",
@@ -107,7 +108,10 @@ export default function Tool() {
     },
   ]);
 
-  const [formatFor, setFormatFor] = useState<formatForTypes>("skype");
+  const [formatFor, setFormatFor] = useLocalStorage<formatForTypes>(
+    "create-formatFor",
+    "skype"
+  );
 
   const handleFormatFor = (
     event: React.MouseEvent<HTMLElement>,

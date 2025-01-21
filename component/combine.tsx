@@ -28,6 +28,7 @@ import {
   formatForTypes,
   link,
 } from "@/interfaces/all";
+import useLocalStorage from "@/customhook/useLocalStorage";
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -48,11 +49,18 @@ function getTodayDate(): string {
 export default function Combine() {
   const [newUpdate, setNewUpdate] = useState<string | null>("");
   const [open, setOpen] = useState<boolean>(false);
+
   const [addUpdatesOpen, setAddUpdatesOpen] = useState<boolean>(false);
 
-  const [updates, setUpdates] = useState<Update[]>([]);
+  const [updates, setUpdates] = useLocalStorage<Update[]>(
+    "combine-updates",
+    []
+  );
 
-  const [formatFor, setFormatFor] = useState<formatForTypes>("skype");
+  const [formatFor, setFormatFor] = useLocalStorage<formatForTypes>(
+    "combine-formatFor",
+    "skype"
+  );
 
   const handleFormatFor = (
     event: React.MouseEvent<HTMLElement>,
@@ -1808,7 +1816,7 @@ export default function Combine() {
               theme="github"
               name="xyz"
               width="100%"
-              height="75vh"
+              height="80vh"
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "8px",
@@ -1817,21 +1825,6 @@ export default function Combine() {
             />
 
             {/* Share Button Section */}
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => handleShareUpdates(updates)}
-              sx={{
-                alignSelf: "center",
-                fontSize: "1rem",
-                padding: "10px 20px",
-                borderRadius: "8px",
-                textTransform: "none",
-                boxShadow: 3,
-              }}
-            >
-              Share Updates
-            </Button>
           </Box>
         </Box>
       </Box>
