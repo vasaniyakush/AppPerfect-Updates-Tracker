@@ -6,7 +6,7 @@ export default function Home() {
       <AppBar position="relative">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Mady by{" "}
+            Made by{" "}
             <Link
               color="textPrimary"
               href="https://www.vasaniyakush.me"
