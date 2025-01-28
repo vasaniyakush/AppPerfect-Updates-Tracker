@@ -49,7 +49,7 @@ function getTodayDate(): string {
 // }
 
 export default function Tool() {
-  const [name, setName] = useState<string | null>("Kush");
+  const [name, setName] = useLocalStorage<string | null>("create-name", "Kush");
   const [open, setOpen] = useState<boolean>(false);
   const [addUpdatesOpen, setAddUpdatesOpen] = useState<boolean>(false);
 
