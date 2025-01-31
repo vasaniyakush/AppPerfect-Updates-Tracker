@@ -1,11 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   Button,
   Divider,
-  IconButton,
-  TextField,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -31,7 +32,7 @@ import {
 } from "@/interfaces/all";
 import useLocalStorage from "@/customhook/useLocalStorage";
 import { TextFieldShadcn } from "./TextFieldShadcn";
-
+import { category_list } from "./constants"
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
   return alphabet[index % 26]; // Handles up to 26 letters
@@ -148,9 +149,8 @@ export default function Tool() {
 
               {
                 status.details.map((detail: Detail, index: number) => {
-                  finalStr += `            ${indexToAlphabet(index)}. ${
-                    detail.description
-                  }\n`;
+                  finalStr += `            ${indexToAlphabet(index)}. ${detail.description
+                    }\n`;
 
                   {
                     detail.subPoints?.map(
@@ -226,7 +226,7 @@ export default function Tool() {
 
     const emptyUpdate: Update = {
       id: updates.length + 1,
-      category: "New Category",
+      category: "Plotly",
       tasks: [],
     };
     // updates.push(emptyUpdate);
@@ -244,7 +244,7 @@ export default function Tool() {
     setUpdates(updatedUpdates);
   }
   function handleCategoryChange(
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: SelectChangeEvent<string>,
     updateId: number
   ) {
     console.log("Category Change called with UpdateId: ", updateId);
@@ -780,10 +780,10 @@ export default function Tool() {
     updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[
       pointIndex
     ].subPoints = [
-      ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
-        .details[pointIndex]?.subPoints || []),
-      newSubPoint,
-    ];
+        ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
+          .details[pointIndex]?.subPoints || []),
+        newSubPoint,
+      ];
 
     // Set the updated state
     setUpdates(updatedUpdates);
@@ -1185,13 +1185,7 @@ export default function Tool() {
           setOpen={setOpen}
           updates={updates}
         ></AlertDialog>
-        {/* <AddUpdatesDialog
-          open={addUpdatesOpen}
-          setOpen={setAddUpdatesOpen}
-          updates={updates}
-          setUpdates={setUpdates}
-          formatUpdates={formatUpdates}
-        /> */}
+
         <Box
           overflow={"scroll"}
           sx={{
@@ -1220,9 +1214,9 @@ export default function Tool() {
               }
               label="Name"
               variant="filled"
-              // sx={{
-              //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
-              // }}
+            // sx={{
+            //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
+            // }}
             />
             <Button
               variant="contained"
@@ -1262,16 +1256,20 @@ export default function Tool() {
             return (
               <Box key={update.id}>
                 <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
-                  <TextFieldShadcn
-                    id={"category-name-" + update.id.toString()}
-                    label={"Category: " + indexToAlphabet(index)}
+                  <Select
+                    id="tool-category-select-standard"
+                    variant="filled"
                     value={update.category}
-                    placeholder="Plotly/Data Pipelines/Reporting Service"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(e: SelectChangeEvent<string>) =>
                       handleCategoryChange(e, update.id)
                     }
-                    variant="filled"
-                  ></TextFieldShadcn>
+                    label="Age"
+                  >
+
+                    {category_list.map((category: string) => (
+                      <MenuItem key={category} value={category}>{category}</MenuItem>
+                    ))}
+                  </Select>
 
                   <Box>
                     <Button
@@ -1414,7 +1412,7 @@ export default function Tool() {
                                           )
                                         }
                                         variant="filled"
-                                        // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                      // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                       />
                                       <Box
                                         sx={{ flex: "0 0 20%" }} // Fixed width proportion
@@ -1469,7 +1467,7 @@ export default function Tool() {
                                                   )
                                                 }
                                                 variant="filled"
-                                                // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                              // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
                                                 sx={{ flex: "0 0 30%" }} // Fixed width proportion

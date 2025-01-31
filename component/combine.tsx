@@ -1,11 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   Button,
   Divider,
   IconButton,
   TextField,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -30,6 +33,8 @@ import {
 } from "@/interfaces/all";
 import useLocalStorage from "@/customhook/useLocalStorage";
 import { TextFieldShadcn } from "./TextFieldShadcn";
+import { category_list } from "./constants"
+
 
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -96,9 +101,8 @@ export default function Combine() {
 
               {
                 status.details.map((detail: Detail, index: number) => {
-                  finalStr += `            ${indexToAlphabet(index)}. ${
-                    detail.description
-                  }\n`;
+                  finalStr += `            ${indexToAlphabet(index)}. ${detail.description
+                    }\n`;
 
                   {
                     detail.subPoints?.map(
@@ -174,7 +178,7 @@ export default function Combine() {
 
     const emptyUpdate: Update = {
       id: updates.length + 1,
-      category: "New Category",
+      category: "Plotly",
       tasks: [],
     };
     // updates.push(emptyUpdate);
@@ -192,7 +196,7 @@ export default function Combine() {
     setUpdates(updatedUpdates);
   }
   function handleCategoryChange(
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: SelectChangeEvent<string>,
     updateId: number
   ) {
     console.log("Category Change called with UpdateId: ", updateId);
@@ -728,10 +732,10 @@ export default function Combine() {
     updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex].details[
       pointIndex
     ].subPoints = [
-      ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
-        .details[pointIndex]?.subPoints || []),
-      newSubPoint,
-    ];
+        ...(updatedUpdates[updateIndex].tasks[taskIndex].statuses[statusIndex]
+          .details[pointIndex]?.subPoints || []),
+        newSubPoint,
+      ];
 
     // Set the updated state
     setUpdates(updatedUpdates);
@@ -1138,11 +1142,56 @@ export default function Combine() {
           // ];
 
           update.tasks.map((task: Task) => {
-            const newTask = {
-              ...task,
-              id: currUpdates[existingIndex].tasks.length + 1,
-            };
-            currUpdates[existingIndex].tasks.push(newTask);
+            
+            const existingTaskIndex = currUpdates[existingIndex].tasks.findIndex(
+              (t: Task) => t.title === task.title
+            );
+
+            if (existingTaskIndex === -1) {
+              const newTask = {
+                ...task,
+                id: currUpdates[existingIndex].tasks.length + 1,
+              };
+              currUpdates[existingIndex].tasks.push(newTask);
+            }
+            else{
+              // task.
+              currUpdates[existingIndex].tasks[existingTaskIndex].mergeRequests = currUpdates[existingIndex].tasks[existingTaskIndex].mergeRequests.concat(task.mergeRequests) ;
+              for(let i = 0; i < currUpdates[existingIndex].tasks[existingTaskIndex].mergeRequests.length; i++){
+                currUpdates[existingIndex].tasks[existingTaskIndex].mergeRequests[i].id = i + 1;
+              }
+              currUpdates[existingIndex].tasks[existingTaskIndex].appLinks = currUpdates[existingIndex].tasks[existingTaskIndex].appLinks.concat(task.appLinks) ;
+              for(let i = 0; i < currUpdates[existingIndex].tasks[existingTaskIndex].appLinks.length; i++){
+                currUpdates[existingIndex].tasks[existingTaskIndex].appLinks[i].id = i + 1;
+              }
+
+              for(let i = 0; i < task.statuses.length; i++){
+                const existingStatusIndex = currUpdates[existingIndex].tasks[existingTaskIndex].statuses.findIndex(
+                  (s: Status) => s.status === task.statuses[i].status
+                );
+                if(existingStatusIndex === -1){
+                  currUpdates[existingIndex].tasks[existingTaskIndex].statuses.push(task.statuses[i]);
+                }
+                else{
+                  currUpdates[existingIndex].tasks[existingTaskIndex].statuses[existingStatusIndex].details = [...new Set([...currUpdates[existingIndex].tasks[existingTaskIndex].statuses[existingStatusIndex].details, ...task.statuses[i].details])]; ;
+                }
+              }
+
+              for(let i = 0; i < currUpdates[existingIndex].tasks[existingTaskIndex].statuses.length; i++){
+                currUpdates[existingIndex].tasks[existingTaskIndex].statuses[i].id = i + 1;
+                for(let j = 0; j < currUpdates[existingIndex].tasks[existingTaskIndex].statuses[i].details.length; j++){
+                  currUpdates[existingIndex].tasks[existingTaskIndex].statuses[i].details[j].id = j + 1;
+                  
+                }
+              }
+            }
+
+            
+            // const newTask = {
+            //   ...task,
+            //   id: currUpdates[existingIndex].tasks.length + 1,
+            // };
+            // currUpdates[existingIndex].tasks.push(newTask);
           });
         }
 
@@ -1208,9 +1257,9 @@ export default function Combine() {
               variant="standard"
               fullWidth
               margin="normal"
-              // sx={{
-              //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
-              // }}
+            // sx={{
+            //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
+            // }}
             />
             <Button
               variant="contained"
@@ -1245,15 +1294,22 @@ export default function Combine() {
             return (
               <Box key={update.id}>
                 <Box ml={4} mt={1} display="flex" alignItems="flex-end" gap={1}>
-                  <TextFieldShadcn
-                    id={"category-name-" + update.id.toString()}
-                    label={"Category: " + indexToAlphabet(index)}
+          
+                  <Select
+                    id="combine-category-select-standard"
+                    variant="filled"
                     value={update.category}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onChange={(e: SelectChangeEvent<string>) =>
                       handleCategoryChange(e, update.id)
                     }
-                    variant="filled"
-                  ></TextFieldShadcn>
+                    
+                    label="Age"
+                  >
+          
+                    {category_list.map((category: string) => (
+                      <MenuItem key={category} value={category}>{category}</MenuItem>
+                    ))}
+                  </Select>
 
                   <Box>
                     <Button
@@ -1397,7 +1453,7 @@ export default function Combine() {
                                           )
                                         }
                                         variant="filled"
-                                        // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                      // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                       />
                                       <Box
                                         sx={{ flex: "0 0 20%" }} // Fixed width proportion
@@ -1451,7 +1507,7 @@ export default function Combine() {
                                                   )
                                                 }
                                                 variant="filled"
-                                                // sx={{ flex: "0 0 80%" }} // Fixed width proportion
+                                              // sx={{ flex: "0 0 80%" }} // Fixed width proportion
                                               />
                                               <Box
                                                 sx={{ flex: "0 0 30%" }} // Fixed width proportion
