@@ -19,8 +19,8 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import ShareIcon from "@mui/icons-material/Share";
+import AddIcon from '@mui/icons-material/Add'; 
 import AlertDialog from "./dialog";
-import AddUpdatesDialog from "./addUpdatesDialog";
 import {
   Detail,
   Status,
@@ -33,6 +33,7 @@ import {
 import useLocalStorage from "@/customhook/useLocalStorage";
 import { TextFieldShadcn } from "./TextFieldShadcn";
 import { category_list } from "./constants"
+import AddUpdatesFromEncodedDialog from "./addUpdatesFromEncodedDialog";
 function indexToAlphabet(index: number): string {
   const alphabet = "abcdefghijklmnopqrstuvwxyz";
   return alphabet[index % 26]; // Handles up to 26 letters
@@ -45,9 +46,7 @@ function getTodayDate(): string {
   const day = String(today.getDate()).padStart(2, "0"); // Day of the month
   return `${year}-${month}-${day}`;
 }
-// function pad(num:number):string{
 
-// }
 
 export default function Tool() {
   const [name, setName] = useLocalStorage<string | null>("create-name", "Kush");
@@ -1186,6 +1185,13 @@ export default function Tool() {
           updates={updates}
         ></AlertDialog>
 
+        <AddUpdatesFromEncodedDialog
+          open={addUpdatesOpen}
+          setOpen={setAddUpdatesOpen}
+          updates={updates}
+          setUpdates={setUpdates}
+        ></AddUpdatesFromEncodedDialog>
+
         <Box
           overflow={"scroll"}
           sx={{
@@ -1202,8 +1208,6 @@ export default function Tool() {
               justifyContent: "space-between",
               pl: 4,
               pr: 2,
-              // gap: 2, // Adds space between elements
-              // mt: 2, // Adds margin-top for spacing from other elements
             }}
           >
             <TextFieldShadcn
@@ -1214,10 +1218,27 @@ export default function Tool() {
               }
               label="Name"
               variant="filled"
-            // sx={{
-            //   flex: 1, // Ensures the TextFieldShadcn grows if space is available
-            // }}
             />
+            <Box>
+
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => setAddUpdatesOpen(!addUpdatesOpen)}
+              endIcon={<AddIcon />}
+              sx={{
+                alignSelf: "center",
+                fontSize: "1rem",
+                padding: "10px 20px",
+                borderRadius: "8px",
+                textTransform: "none",
+                boxShadow: 3,
+                mr: 2,
+              }}
+              size="medium" 
+              >
+              Add from Base64
+            </Button>
             <Button
               variant="contained"
               color="success"
@@ -1232,9 +1253,10 @@ export default function Tool() {
                 boxShadow: 3,
               }}
               size="medium"
-            >
+              >
               Share Updates
             </Button>
+              </Box>
           </Box>
 
           <Divider sx={{ marginTop: 1 }} orientation="horizontal"></Divider>
