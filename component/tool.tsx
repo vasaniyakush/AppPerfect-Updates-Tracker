@@ -140,9 +140,9 @@ export default function Tool() {
           task.statuses.map((status: Status, index: number) => {
             finalStr += `${status.status}\n`
             status.details.map((detail: Detail, index: number) => {
-              finalStr += `\t${indexToAlphabet(index)}. ${detail.description}\n`
+              finalStr += `    ${indexToAlphabet(index)}. ${detail.description}\n`
               detail.subPoints?.map((subPoint: SubDetail, index: number) => {
-                finalStr += `\t\t- ${subPoint.description}\n`
+                finalStr += `        - ${subPoint.description}\n`
               })
             })
           })
