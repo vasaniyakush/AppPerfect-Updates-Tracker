@@ -130,65 +130,98 @@ export default function Tool() {
     } else if (formatFor == "slack") {
       finalStr += `Updates: ${getTodayDate()}\n\n`;
     }
+    if (formatFor == "jira") {
+      finalStr += `Updates: ${getTodayDate()}\n\n`;
 
-    updates.map((update: Update, index: number) => {
-      finalStr += `${indexToAlphabet(index)}. ${update.category}\n`;
-      {
+      updates.map((update: Update, index: number) => {
+
         update.tasks.map((task: Task, index: number) => {
-          finalStr += `    ${index + 1}. ${task.title}\n`;
-          finalStr += `    ( ${task.jiraLink} )\n`;
-
-          {
-            task.statuses.map((status: Status, index: number) => {
-              finalStr += `        ${index + 1}. ${status.status} \n`;
-
-              {
-                status.details.map((detail: Detail, index: number) => {
-                  finalStr += `            ${indexToAlphabet(index)}. ${detail.description
-                    }\n`;
-
-                  {
-                    detail.subPoints?.map(
-                      (subPoint: SubDetail, index: number) => {
-                        finalStr += `                - ${subPoint.description}\n`;
-                      }
-                    );
-                  }
-                });
-              }
-
-              // finalStr += "\n";
-            });
-          }
+          finalStr += `${task.jiraLink} | ${task.title}\n`
+          task.statuses.map((status: Status, index: number) => {
+            finalStr += `${status.status}\n`
+            status.details.map((detail: Detail, index: number) => {
+              finalStr += `\t${indexToAlphabet(index)}. ${detail.description}\n`
+              detail.subPoints?.map((subPoint: SubDetail, index: number) => {
+                finalStr += `\t\t- ${subPoint.description}\n`
+              })
+            })
+          })
           if (task.mergeRequests.length > 0) {
-            finalStr += "        MR:-";
+            finalStr += `MR:-`
           }
-          {
-            task.mergeRequests.map((mergeRequest: link, index: number) => {
-              if (index == 0) {
-                finalStr += ` ( ${mergeRequest.url} )\n`;
-              } else {
-                finalStr += `             ( ${mergeRequest.url} )\n`;
-              }
-            });
-          }
+          task.mergeRequests.map((mergeRequest: link, index: number) => {
+            finalStr += `\t${mergeRequest.url}\n`
+          })
           if (task.appLinks.length > 0) {
-            finalStr += "        App:-";
+            finalStr += `App:-`
           }
-          {
-            task.appLinks.map((appLink: link, index: number) => {
-              if (index == 0) {
-                finalStr += ` ( ${appLink.url} )\n`;
-              } else {
-                finalStr += `              ( ${appLink.url} )\n`;
-              }
-            });
-          }
-          finalStr += "\n";
-        });
-      }
-      finalStr += "\n";
-    });
+          task.appLinks.map((appLink: link, index: number) => {
+            finalStr += `\t${appLink.url}\n`
+          })
+          finalStr += `\n\n`
+        })
+      })
+    }
+    else {
+      updates.map((update: Update, index: number) => {
+        finalStr += `${indexToAlphabet(index)}. ${update.category}\n`;
+        {
+          update.tasks.map((task: Task, index: number) => {
+            finalStr += `    ${index + 1}. ${task.title}\n`;
+            finalStr += `    ( ${task.jiraLink} )\n`;
+
+            {
+              task.statuses.map((status: Status, index: number) => {
+                finalStr += `        ${index + 1}. ${status.status} \n`;
+
+                {
+                  status.details.map((detail: Detail, index: number) => {
+                    finalStr += `            ${indexToAlphabet(index)}. ${detail.description
+                      }\n`;
+
+                    {
+                      detail.subPoints?.map(
+                        (subPoint: SubDetail, index: number) => {
+                          finalStr += `                - ${subPoint.description}\n`;
+                        }
+                      );
+                    }
+                  });
+                }
+
+                // finalStr += "\n";
+              });
+            }
+            if (task.mergeRequests.length > 0) {
+              finalStr += "        MR:-";
+            }
+            {
+              task.mergeRequests.map((mergeRequest: link, index: number) => {
+                if (index == 0) {
+                  finalStr += ` ( ${mergeRequest.url} )\n`;
+                } else {
+                  finalStr += `             ( ${mergeRequest.url} )\n`;
+                }
+              });
+            }
+            if (task.appLinks.length > 0) {
+              finalStr += "        App:-";
+            }
+            {
+              task.appLinks.map((appLink: link, index: number) => {
+                if (index == 0) {
+                  finalStr += ` ( ${appLink.url} )\n`;
+                } else {
+                  finalStr += `              ( ${appLink.url} )\n`;
+                }
+              });
+            }
+            finalStr += "\n";
+          });
+        }
+        finalStr += "\n";
+      });
+    }
 
     if (formatFor == "email") {
       finalStr += "Thanks,\nAppPerfect Team\n";
@@ -372,6 +405,7 @@ export default function Tool() {
                 <ToggleButton value="skype">Skype</ToggleButton>
                 <ToggleButton value="email">Email</ToggleButton>
                 <ToggleButton value="slack">Slack</ToggleButton>
+                <ToggleButton value="jira">Jira</ToggleButton>
               </ToggleButtonGroup>
             </Box>
 

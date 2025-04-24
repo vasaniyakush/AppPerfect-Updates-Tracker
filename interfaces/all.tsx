@@ -34,4 +34,4 @@ export interface SubDetail {
   id: number;
   description: string;
 }
-export type formatForTypes = "email" | "skype" | "slack";
+export type formatForTypes = "email" | "skype" | "slack" | "jira";
